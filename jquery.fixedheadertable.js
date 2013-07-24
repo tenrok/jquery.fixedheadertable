@@ -256,7 +256,7 @@
 
                 // bind mousewheel events
                 var maxTop = $fixedColumn.find('.fht-tbody .fht-table').height() - $fixedColumn.find('.fht-tbody').height();
-                $fixedColumn.find('.fht-table').bind('mousewheel', function (event, delta, deltaX, deltaY) {
+                $fixedColumn.find('.fht-tbody .fht-table').bind('mousewheel', function (event, delta, deltaX, deltaY) {
                     if (deltaY === 0) {return; }
                     var top = parseInt($(this).css('marginTop'), 10) + (deltaY > 0 ? 120 : -120);
                     if (top > 0) {top = 0; }

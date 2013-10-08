@@ -201,7 +201,8 @@
 
                 //recalculate the heads with multiple column variables
                 $fixedBody.find('.fht-thead thead tr').each(function () {
-                    $firstThChildren.push($(this).find('th:lt(' + settings.fixedColumns / parseInt($(this).find('th:first-child').attr('colspan'), 10) + ')'));
+                    var colspan = $(this).find('th:first-child').attr('colspan');
+                    $firstThChildren.push($(this).find('th:lt(' + settings.fixedColumns / (colspan ? parseInt(colspan, 10) : 1) + ')'));
                 });
                 fixedColumnWidth = settings.fixedColumns * tableProps.border;
                 //consider the border of the cell, we take the last row which consists of at least one row variable

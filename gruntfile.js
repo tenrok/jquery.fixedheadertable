@@ -1,115 +1,120 @@
 module.exports = function(grunt) {
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        bower: {
-            install: {
-                options: {
-                    targetDir: "demo/lib/"
-                }
-            }
-        },
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 
-        jshint: {
-            // define the files to lint
-            files: ['gruntfile.js', '*.js', 'demo/js/*.js'],
-            options: {
-                // more options here if you want to override JSHint defaults
-                globals: {
-                    jQuery: true,
-                    console: true,
-                    module: true
-                }
-            }
-        },
+		bower: {
+			install: {
+				options: {
+					// targetDir: "demo/lib/"
+				}
+			}
+		},
 
-        copy: {
-            src: {
-                src: "src/jquery.fixedheadertable.js",
-                dest: "demo/"
-            },
-            css: {
-                src: "css/*.css",
-                dest: "demo/"
-            }
-        },
+		jshint: {
+			// define the files to lint
+			files: ['gruntfile.js', '*.js', 'demo/src/*.js'],
+			options: {
+				// more options here if you want to override JSHint defaults
+				globals: {
+					jQuery: true,
+					console: true,
+					module: true
+				}
+			}
+		},
 
-        watch: {
-            options: {
-                livereload: true
-            },
-            src: {
-                files: ["src/jquery.fixedheadertable.js"],
-                tasks: ["check", "copy:src", "uglify"],
-                options: {
-                    atBegin: true
-                }
-            },
-            bower: {
-                files: "bower.json",
-                tasks: "bower"
-            }
-        },
+		copy: {
+			src: {
+				src: "src/jquery.fixedheadertable.js",
+				dest: "demo/"
+			},
+			css: {
+				src: "css/*.css",
+				dest: "demo/"
+			}
+		},
 
-        clean: {
-            build: ['demo/lib'],
-            bower: ['bower_components'],
-            src: [
-                'demo/src/jquery.fixedheadertable.js', 
-                'demo/css/defaultTheme.css', 
-                'src/jquery.fixedheadertable.min.js'
-            ]
-        },
+		watch: {
+			options: {
+				livereload: true
+			},
+			src: {
+				files: ["src/jquery.fixedheadertable.js"],
+				tasks: ["check", "copy:src", "uglify"],
+				options: {
+					atBegin: true
+				}
+			},
+			bower: {
+				files: "bower.json",
+				tasks: "bower"
+			}
+		},
 
-        connect: {
-            server: {
-                options: {
-                    port: 9001,
-                    base: 'demo'
-                }
-            }
-        },
+		clean: {
+			build: ['demo/lib'],
+			bower: ['bower_components'],
+			src: [
+				'demo/src/jquery.fixedheadertable.js',
+				'demo/css/defaultTheme.css'
+			]
+		},
 
-        uglify: {
-            main: {
-                files: {
-                    'src/jquery.fixedheadertable.min.js': [
-                    'demo/lib/jquery-mousewheel/jquery.mousewhee.js', 
-                    'src/jquery.fixedheadertable.js'
-                ]
-                }
-            }
-        }
-    });
+		connect: {
+			server: {
+				options: {
+					port: 9001,
+					base: 'demo'
+				}
+			}
+		},
 
-    grunt.loadNpmTasks('grunt-bower-task');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-connect');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
+		uglify: {
+			options: {
+				output: {
+					comments: '/^!/'
+				}
+			},
+			main: {
+				files: {
+					'jquery.fixedheadertable.min.js': [
+						'demo/lib/jquery-mousewheel/jquery.mousewheel.js',
+						'src/jquery.fixedheadertable.js'
+					]
+				}
+			}
+		}
+	});
 
-    // Default task(s).
-    grunt.registerTask('check', ['jshint']);
+	grunt.loadNpmTasks('grunt-bower-task');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-connect');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('install', [
-        'bower',
-        'copy'
-    ]);
+	// Default task(s).
+	grunt.registerTask('check', ['jshint']);
 
-    grunt.registerTask('minify', [
-        'install',
-        'uglify'
-    ]);
+	grunt.registerTask('install', [
+		'bower',
+		'copy'
+	]);
 
-    grunt.registerTask('server', [
-        'connect', 
-        'watch'
-    ]);
+	grunt.registerTask('minify', [
+		'install',
+		'uglify'
+	]);
 
-    grunt.registerTask('default', [
-        'check',
-        'minify',
-        'server'
-    ]);
+	grunt.registerTask('server', [
+		'connect', 
+		'watch'
+	]);
+
+	grunt.registerTask('default', [
+		'check',
+		'minify',
+		'server'
+	]);
 };

@@ -25,8 +25,18 @@ module.exports = function(grunt) {
 
 		copy: {
 			src: {
-				src: "src/jquery.fixedheadertable.js",
-				dest: "demo/"
+				files: [
+					{
+						src: 'src/jquery.fixedheadertable.js',
+						dest: 'demo/'
+					},
+					{
+						expand: true,
+						cwd: 'src/',
+						src: '**',
+						dest: './'
+					},
+				]
 			},
 			css: {
 				src: "css/*.css",
@@ -39,8 +49,8 @@ module.exports = function(grunt) {
 				livereload: true
 			},
 			src: {
-				files: ["src/jquery.fixedheadertable.js"],
-				tasks: ["check", "copy:src", "uglify"],
+				files: ['src/jquery.fixedheadertable.js'],
+				tasks: ['check', 'copy:src', 'uglify'],
 				options: {
 					atBegin: true
 				}

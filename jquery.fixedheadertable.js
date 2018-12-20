@@ -11,7 +11,7 @@
  * jQuery authoring guidelines
  *
  * Launch  : October 2009
- * Version : 1.3.1
+ * Version : 1.3
  * Released: May 9th, 2011
  *
  *
@@ -78,7 +78,7 @@
         settings.scrollbarOffset = helpers._getScrollbarWidth();
         settings.themeClassName = settings.themeClass;
 
-        if (settings.width.search('%') > -1) {
+        if (settings.width.search && settings.width.search('%') > -1) {
             widthMinusScrollbar = $self.parent().width() - settings.scrollbarOffset;
         } else {
             widthMinusScrollbar = settings.width - settings.scrollbarOffset;
@@ -131,7 +131,10 @@
             $divHead = $('<div class="fht-thead"><table class="fht-table"></table></div>').prependTo($wrapper);
           }
 
-          $divHead.find('table.fht-table').addClass(settings.originalTable.attr('class'));
+          $divHead.find('table.fht-table')
+            .addClass(settings.originalTable.attr('class'))
+            .attr('style', settings.originalTable.attr('style'));
+
           $thead.clone().appendTo($divHead.find('table'));
         } else {
           $divHead = $wrapper.find('div.fht-thead');
@@ -463,7 +466,7 @@
 
         // bind mousewheel events
         var maxTop = $fixedColumn.find('.fht-tbody .fht-table').height() - $fixedColumn.find('.fht-tbody').height();
-        $fixedColumn.find('.fht-table').bind('mousewheel', function(event, delta, deltaX, deltaY) {
+        $fixedColumn.find('.fht-tbody .fht-table').bind('mousewheel', function(event, delta, deltaX, deltaY) {
           if (deltaY == 0) {
             return;
           }
@@ -609,7 +612,7 @@
           if (!$(this).closest('.fht-tbody').length && $(this).is(':last-child') && !$(this).closest('.fht-fixed-column').length) {
             var padding = Math.max((($(this).innerWidth() - $(this).width()) / 2), settings.scrollbarOffset);
             $(this).css({
-                'padding-right': padding + 'px'
+              'padding-right': parseInt($(this).css('padding-right')) + padding + 'px'
             });
           }
         });
